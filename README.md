@@ -99,3 +99,9 @@ sudo tee -a /etc/sysctl.conf <<< "net.ipv4.tcp_congestion_control = bbr1"
 ```
 sudo reboot
 ```
+
+### LICENSE
+
+```
+GPL-2.0-only
+```
