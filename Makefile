@@ -9,7 +9,9 @@
 # kapi_checklist against KDIR and writes kernel_config.h (HAVE_* macros).
 # tcp_bbr3.c + bbr_compat.h adapt purely on those macros.
 
-KDIR           ?= /lib/modules/$(shell uname -r)/build
+# DKMS invokes make with KERNELRELEASE=$kernelver, which can differ from
+# uname -r (e.g. building for a newly installed kernel before reboot).
+KDIR           ?= $(if $(KERNELRELEASE),/lib/modules/$(KERNELRELEASE)/build,/lib/modules/$(shell uname -r)/build)
 PWD            := $(shell pwd)
 
 # Compiler used for the probes; should match the one kbuild uses.
