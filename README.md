@@ -39,9 +39,17 @@ BBRPlus is an good improvement to BBR and is highly recommended to be applied in
 确保你的系统有`dkms`，内核构建环境和至少有内核头文件。(Ubuntu下叫 `linux-headers-liquorix-amd64`)
 
 ```
-sudo apt install -y git build-essential dkms linux-headers-liquorix-amd64
+add-apt-repository ppa:damentz/liquorix
+apt update
+sudo apt install -y git build-essential dkms linux-headers-liquorix-amd64 (linux-image-liquorix-amd64)
 git clone https://github.com/hrimfaxi/tcp_bbr_modules
 cd tcp_bbr_modules
+```
+
+如果在切换后遇到兼容性问题，可以在启动时通过 GRUB 菜单切回原版内核，再在终端中运行以下命令进行清理：  
+```
+apt purge linux-image-liquorix-amd64 linux-headers-liquorix-amd64
+update-grub
 ```
 
 ```
