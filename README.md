@@ -41,7 +41,7 @@ BBRPlus is an good improvement to BBR and is highly recommended to be applied in
 ```
 add-apt-repository ppa:damentz/liquorix
 apt update
-sudo apt install -y git build-essential dkms linux-headers-liquorix-amd64 linux-image-liquorix-amd64
+sudo apt install -y git build-essential dkms linux-image-7.2.12-1-liquorix-amd64 linux-headers-7.2.12-1-liquorix-amd64
 grep -E "menuentry |submenu " /boot/grub/grub.cfg
 vim /etc/default/grub
 update-grub
