@@ -41,7 +41,7 @@ BBRPlus is an good improvement to BBR and is highly recommended to be applied in
 ```
 add-apt-repository ppa:damentz/liquorix
 apt update
-sudo apt install -y git build-essential dkms \
+sapt install -y git build-essential dkms \
 linux-image-7.2.12-1-liquorix-amd64 linux-headers-7.2.12-1-liquorix-amd64
 grep -E "menuentry |submenu " /boot/grub/grub.cfg
 vim /etc/default/grub
@@ -58,22 +58,34 @@ update-grub
 ```
 
 ```
-sudo make dkms
-sudo modprobe tcp_nanqinlang
-sudo modprobe tcp_tsunami
-sudo modprobe tcp_bbrplus
+make dkms
+modprobe tcp_nanqinlang
+modprobe tcp_tsunami
+modprobe tcp_bbrplus
+```
+or
+```
+sudo dkms add .
+sudo dkms build  -m tcp_bbr_modules -v 1.0
+sudo dkms install -m tcp_bbr_modules -v 1.0
+```
 
+失败重来请用：  
+dkms remove tcp_bbr_modules/1.0 --all
+
+
+```
 # 试用nanqinlang
-sudo sysctl -w net.ipv4.tcp_congestion_control=nanqinlang
+sysctl -w net.ipv4.tcp_congestion_control=nanqinlang
 
 # 试用tsunami
-sudo sysctl -w net.ipv4.tcp_congestion_control=tsunami
+sysctl -w net.ipv4.tcp_congestion_control=tsunami
 
 # 试用bbrplus
-sudo sysctl -w net.ipv4.tcp_congestion_control=bbrplus
+sysctl -w net.ipv4.tcp_congestion_control=bbrplus
 
 # 试用bbr1
-sudo sysctl -w net.ipv4.tcp_congestion_control=bbr1
+sysctl -w net.ipv4.tcp_congestion_control=bbr1
 
 ss -tin|grep -E 'nanqinlang|tsunami|bbrplus|bbr1'
 ```
@@ -81,32 +93,32 @@ ss -tin|grep -E 'nanqinlang|tsunami|bbrplus|bbr1'
 ## 固化到系统
 
 ```
-sudo tee -a /etc/modules-load.d/tcp-cong.conf <<< tcp_nanqinlang
-sudo tee -a /etc/modules-load.d/tcp-cong.conf <<< tcp_tsunami
-sudo tee -a /etc/modules-load.d/tcp-cong.conf <<< tcp_bbrplus
-sudo tee -a /etc/modules-load.d/tcp-cong.conf <<< tcp_bbr1
+tee -a /etc/modules-load.d/tcp-cong.conf <<< tcp_nanqinlang
+tee -a /etc/modules-load.d/tcp-cong.conf <<< tcp_tsunami
+tee -a /etc/modules-load.d/tcp-cong.conf <<< tcp_bbrplus
+tee -a /etc/modules-load.d/tcp-cong.conf <<< tcp_bbr1
 ```
 
 然后任选一个算法作为拥塞算法:
 
 nanqinlang:
 ```
-sudo tee -a /etc/sysctl.conf <<< "net.ipv4.tcp_congestion_control = nanqinlang"
+tee -a /etc/sysctl.conf <<< "net.ipv4.tcp_congestion_control = nanqinlang"
 ```
 
 tsunami:
 ```
-sudo tee -a /etc/sysctl.conf <<< "net.ipv4.tcp_congestion_control = tsunami"
+tee -a /etc/sysctl.conf <<< "net.ipv4.tcp_congestion_control = tsunami"
 ```
 
 bbrplus:
 ```
-sudo tee -a /etc/sysctl.conf <<< "net.ipv4.tcp_congestion_control = bbrplus"
+tee -a /etc/sysctl.conf <<< "net.ipv4.tcp_congestion_control = bbrplus"
 ```
 
 bbr1:
 ```
-sudo tee -a /etc/sysctl.conf <<< "net.ipv4.tcp_congestion_control = bbr1"
+stee -a /etc/sysctl.conf <<< "net.ipv4.tcp_congestion_control = bbr1"
 ```
 
 成功后，重启即可:
